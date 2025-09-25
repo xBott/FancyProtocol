@@ -1,7 +1,9 @@
 package me.bottdev.fancyprotocol;
 
+import java.util.Optional;
+
 public interface Decoder {
 
-    Packet decode(byte[] bytes);
+    Optional<Packet> decode(byte[] bytes);
 
 }

@@ -5,6 +5,7 @@ import me.bottdev.fancyprotocol.Packet;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class TestSimple {
 
@@ -47,9 +48,6 @@ public class TestSimple {
     @Test
     public void testDecode() {
 
-        FancyProtocol protocol = new FancyProtocol();
-        protocol.getPacketRegistry().register(SetLocationPacket.class);
-
         byte[] bytes = new byte[] {
                 0, 0, 0, 17, 83, 101, 116, 76, 111, 99, 97, 116, 105, 111,
                 110, 80, 97, 99, 107, 101, 116, 0, 0, 0, 4, 116, 101, 115, 116,
@@ -57,13 +55,19 @@ public class TestSimple {
                 64, 94, -64, 0, 0, 0, 0, 0
         };
 
-        Packet packet = protocol.decode(bytes);
-        if (packet instanceof Executable executable) {
-            executable.execute();
-        }
-        SetLocationPacket setLocationPacket = new SetLocationPacket("test", 1.0, 100.0, 123.0);
+        SetLocationPacket packetToCheck = new SetLocationPacket("test", 1.0, 100.0, 123.0);
 
-        assert packet.equals(setLocationPacket);
+        FancyProtocol protocol = new FancyProtocol();
+        protocol.getPacketRegistry().register(SetLocationPacket.class);
+        Optional<Packet> packetOptional = protocol.decode(bytes);
+
+        packetOptional.ifPresent(packet -> {
+            if (packet instanceof Executable executable) {
+                executable.execute();
+            }
+        });
+
+        assert packetOptional.isPresent() && packetOptional.get().equals(packetToCheck);
     }
 
 }

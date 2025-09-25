@@ -18,20 +18,20 @@ public class SimpleDecoder implements Decoder {
     private final PacketRegistry packetRegistry;
 
     @Override
-    public Packet decode(byte[] bytes) {
+    public Optional<Packet> decode(byte[] bytes) {
 
         try (ByteArrayInputStream stream = new ByteArrayInputStream(bytes)) {
 
             Class<? extends Packet> packetClass = decodeClassNameHeader(stream);
             if (packetClass == null) {
                 System.out.println("Failed to decode packet name header");
-                return null;
+                return Optional.empty();
             }
 
             Optional<Packet> packetOptional = createPacket(packetClass);
             if (packetOptional.isEmpty()) {
                 System.out.println("Failed to create packet instance");
-                return null;
+                return Optional.empty();
             }
 
             Packet packet = packetOptional.get();
@@ -41,10 +41,10 @@ public class SimpleDecoder implements Decoder {
                 return null;
             }
 
-            return packet;
+            return Optional.of(packet);
 
         } catch (Exception ex) {
-            return null;
+            return Optional.empty();
         }
     }
 

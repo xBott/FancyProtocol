@@ -4,6 +4,7 @@ import me.bottdev.fancyprotocol.Packet;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class TestAllFields {
 
@@ -72,9 +73,9 @@ public class TestAllFields {
 
         FancyProtocol fancyProtocol = new FancyProtocol();
         fancyProtocol.getPacketRegistry().register(UserInfoPacket.class);
-        Packet packet = fancyProtocol.decode(bytes);
+        Optional<Packet> packetOptional = fancyProtocol.decode(bytes);
 
-        assert packet.equals(packetToCheck);
+        assert packetOptional.isPresent() && packetOptional.get().equals(packetToCheck);
 
     }
 

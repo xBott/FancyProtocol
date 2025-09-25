@@ -7,6 +7,8 @@ import me.bottdev.fancyprotocol.decoders.SimpleDecoder;
 import me.bottdev.fancyprotocol.encoders.SimpleEncoder;
 import me.bottdev.fancyprotocol.fields.PacketFieldRegistry;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,7 +23,7 @@ public class FancyProtocol {
         return encoder.encode(packet);
     }
 
-    public Packet decode(byte[] bytes) {
+    public Optional<Packet> decode(byte[] bytes) {
         return decoder.decode(bytes);
     }
 
