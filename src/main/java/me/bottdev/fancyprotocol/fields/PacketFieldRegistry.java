@@ -1,7 +1,6 @@
 package me.bottdev.fancyprotocol.fields;
 
-import me.bottdev.fancyprotocol.fields.types.DoublePacketField;
-import me.bottdev.fancyprotocol.fields.types.StringPacketField;
+import me.bottdev.fancyprotocol.fields.types.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +10,12 @@ public class PacketFieldRegistry {
 
     public static PacketFieldRegistry primitive() {
         PacketFieldRegistry registry = new PacketFieldRegistry();
+        registry.register("byte", new BytePacketField());
+        registry.register("short", new ShortPacketField());
+        registry.register("int", new IntPacketField());
+        registry.register("float", new FloatPacketField());
         registry.register("double", new DoublePacketField());
+        registry.register("boolean", new BooleanPacketField());
         registry.register("string", new StringPacketField());
         return registry;
     }
