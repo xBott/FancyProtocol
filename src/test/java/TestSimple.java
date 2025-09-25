@@ -1,10 +1,32 @@
+import lombok.*;
+import me.bottdev.fancyprotocol.Executable;
 import me.bottdev.fancyprotocol.FancyProtocol;
 import me.bottdev.fancyprotocol.Packet;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-public class FancyProtocolTests {
+public class TestSimple {
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class SetLocationPacket implements Packet, Executable {
+
+        private String target;
+        private double x;
+        private double y;
+        private double z;
+
+        @Override
+        public void execute() {
+            System.out.printf("Setting location of %s to x: %s y: %s z: %s%n", target, x, y,z);
+        }
+
+    }
 
     @Test
     public void testEncode() {
@@ -36,6 +58,9 @@ public class FancyProtocolTests {
         };
 
         Packet packet = protocol.decode(bytes);
+        if (packet instanceof Executable executable) {
+            executable.execute();
+        }
         SetLocationPacket setLocationPacket = new SetLocationPacket("test", 1.0, 100.0, 123.0);
 
         assert packet.equals(setLocationPacket);
